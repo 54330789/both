@@ -1,6 +1,8 @@
 package com.guli.edu.controller.admin;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.guli.common.constants.ResultCodeEnum;
+import com.guli.common.exception.GuliException;
 import com.guli.common.vo.ResponseResult;
 import com.guli.edu.entity.Teacher;
 import com.guli.edu.query.TeacherQuery;
@@ -65,8 +67,11 @@ public class TeacherAdminController {
             @ApiParam(name = "teacherQuery", value = "查询对象", required = false)
                     TeacherQuery teacherQuery){
 
+        if(page <= 0 || limit <= 0){
+            //throw new GuliException(21003, "参数不正确1");
+            throw new GuliException(ResultCodeEnum.PARAM_ERROR);
+        }
         Page<Teacher> pageParam = new Page<>(page, limit);
-
         teacherService.pageQuery(pageParam, teacherQuery);
         List<Teacher> records = pageParam.getRecords();
         long total = pageParam.getTotal();
