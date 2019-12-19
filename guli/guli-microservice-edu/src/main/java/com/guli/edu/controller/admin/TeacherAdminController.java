@@ -78,4 +78,22 @@ public class TeacherAdminController {
 
         return  ResponseResult.ok().data("total", total).data("rows", records);
     }
+    @ApiOperation(value = "按ID查询讲师信息")
+    @GetMapping("{id}")
+    public ResponseResult getById(@ApiParam(name = "id", value = "讲师ID", required = true)
+                                  @PathVariable String id) {
+        Teacher teacher = teacherService.getById(id);
+        return ResponseResult.ok().data("item",teacher);
+    }
+    @ApiOperation(value = "按ID更新讲师信息")
+    @PutMapping("{id}")
+    public ResponseResult updateById(
+            @ApiParam(name = "id", value = "讲师ID", required = true)
+            @PathVariable String id,
+            @ApiParam(name = "teacher", value = "讲师对象", required = true)
+            @RequestBody Teacher teacher ){
+        teacher.setId(id);
+        teacherService.updateById(teacher);
+        return ResponseResult.ok();
+    }
 }
